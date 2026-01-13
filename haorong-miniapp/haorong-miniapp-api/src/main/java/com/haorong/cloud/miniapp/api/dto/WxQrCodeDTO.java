@@ -1,0 +1,36 @@
+/**
+  * Copyright (c) 2025 沈阳浩荣科技有限公司
+  * All rights reserved.
+  * <p>
+  * 注意：
+  * 本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。
+
+  */
+package com.haorong.cloud.miniapp.api.dto;
+
+import lombok.Data;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+/**
+ * 微信小程序码
+ *
+ * @author haorong
+ * @date 2022/7/11
+ */
+@Data
+public class WxQrCodeDTO implements Serializable {
+
+	@Serial
+	private static final long serialVersionUID = 1L;
+
+	private String appId;
+
+	private String scene;
+
+	private String page;
+
+	private String envVersion;
+
+}

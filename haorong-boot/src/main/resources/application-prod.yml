@@ -1,0 +1,65 @@
+spring:
+  servlet:
+    multipart:
+      maxFileSize: 100MB
+      maxRequestSize: 100MB
+  cache:
+    type: redis # 缓存类型 Redis
+  data:
+    redis:
+      host: 127.0.0.1
+#      password: 123456
+      port: 6379
+
+  # 数据库相关配置
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/huanxing_boot?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true&allowPublicKeyRetrieval=true
+
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: producer_group
+    retry-times-when-send-failed: 5
+    send-message-timeout: 5000
+
+aj:
+  captcha:
+    cache-type: redis
+    water-mark: haorong
+
+encode:
+  key: VyBcekSelErhMYN4
+
+sms:
+  ali:
+    accessKeyId: xxxxxxxxx
+    accessKeySecret: xxxxxxxxxxxxxx
+    loginTemplateCode: SMS_xxxxxxxxxx
+    loginSignName: 环兴商城
+
+xxl:
+  job:
+    adminAddresses: http://localhost:8080/xxl-job-admin
+    accessToken: hxsadadasdasdasda
+
+demo:
+  enabled: true
+
+cert-dir: /root/cert
+
+#knife4j配置
+knife4j:
+  #是否启用增强设置
+  enable: true
+  #是否启用生产环境屏蔽
+  production: true
+  #是否启用登录认证
+  basic:
+    enable: false
+  setting:
+    language: zh_cn
+

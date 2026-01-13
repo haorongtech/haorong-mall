@@ -1,0 +1,4 @@
+com.haorong.cloud.common.myabtis.config.MybatisPlusConfig
+com.haorong.cloud.common.myabtis.config.HxWebMvcConfigurer
+com.haorong.cloud.common.myabtis.properties.TenantConfigProperties
+com.haorong.cloud.common.myabtis.tenant.HxTenantContextFilter

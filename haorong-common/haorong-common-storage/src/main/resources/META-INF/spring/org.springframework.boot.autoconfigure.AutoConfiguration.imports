@@ -1,0 +1,4 @@
+com.haorong.cloud.common.storage.handler.impl.AliOssUploadFileHandler
+com.haorong.cloud.common.storage.handler.impl.QCloudCosUploadFileHandler
+com.haorong.cloud.common.storage.handler.impl.QiNiuCloudUploadFileHandler
+com.haorong.cloud.common.storage.handler.impl.MinioUploadFileHandler

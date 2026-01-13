@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>haorong</artifactId>
+        <groupId>com.haorong</groupId>
+        <version>3.1.0</version>
+    </parent>
+
+    <artifactId>haorong-promotion</artifactId>
+    <description>商城营销模块</description>
+    <packaging>pom</packaging>
+    <modules>
+        <module>haorong-promotion-api</module>
+        <module>haorong-promotion-biz</module>
+    </modules>
+
+
+</project>

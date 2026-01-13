@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.product.mapper.GoodsSkuSpecsValueMapper">
+    <sql id="goodsSkuSpecsValueSql">
+        goods_sku_specs_value
+        .
+        id
+        ,
+        goods_sku_specs_value.sku_id,
+        goods_sku_specs_value.specs_value_id,
+        goods_sku_specs_value.sort,
+        goods_sku_specs_value.create_time,
+        goods_sku_specs_value.update_time,
+        goods_sku_specs_value.del_flag,
+        goods_specs_value.`name` as specsValueName,
+        goods_sku_specs_value.`pic_url`
+    </sql>
+    <select id="selectBySkuId" resultType="com.haorong.cloud.product.api.entity.GoodsSkuSpecsValue">
+        SELECT
+        <include refid="goodsSkuSpecsValueSql"/>
+        FROM
+        goods_sku_specs_value AS goods_sku_specs_value LEFT JOIN goods_specs_value AS goods_specs_value ON
+        goods_sku_specs_value.`specs_value_id` = goods_specs_value.`id`
+        where goods_sku_specs_value.`sku_id` =#{skuId}
+        AND goods_sku_specs_value.`del_flag` = '0'
+        AND goods_specs_value.`del_flag` = '0'
+    </select>
+    <select id="selectGoodsSkuSpecsValues"
+            resultType="com.haorong.cloud.product.api.entity.GoodsSkuSpecsValue">
+        SELECT ANY_VALUE(goods_specs_value.`name`)               AS specsValueName,
+               goods_specs_value.`id`,
+               ANY_VALUE(goods_sku_specs_value.`pic_url`)        AS picUrl,
+               ANY_VALUE(goods_sku_specs_value.`specs_value_id`) AS specsValueId
+        FROM goods_sku_specs_value AS goods_sku_specs_value
+                 LEFT JOIN goods_specs_value AS goods_specs_value
+                           ON goods_specs_value.`id` = goods_sku_specs_value.`specs_value_id`
+        WHERE goods_sku_specs_value.`spu_id` = #{spuId}
+          AND goods_specs_value.`specs_id` = #{specsId}
+          AND goods_sku_specs_value.`del_flag` = '0'
+          AND goods_specs_value.`del_flag` = '0'
+        GROUP BY goods_specs_value.`id`
+    </select>
+</mapper>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.promotion.mapper.CouponUserMapper">
+    <resultMap id="pageResultMap" type="com.haorong.cloud.promotion.api.entity.CouponUser">
+        <collection property="couponInfo" column="{id=coupon_id}"
+                    ofType="com.haorong.cloud.promotion.api.entity.CouponInfo"
+                    select="com.haorong.cloud.promotion.mapper.CouponInfoMapper.selectById"></collection>
+    </resultMap>
+    <sql id="couponUserSql">
+        coupon_user
+        .
+        id
+        ,
+	coupon_user.coupon_id,
+	coupon_user.user_id,
+	coupon_user.`status`,
+	coupon_user.order_id,
+	coupon_user.received_time,
+	coupon_user.validat_time,
+	coupon_user.used_time,
+	coupon_user.create_time,
+	coupon_user.update_time
+    </sql>
+    <select id="selectAdminPage" resultType="com.haorong.cloud.promotion.api.entity.CouponUser">
+        SELECT
+        <include refid="couponUserSql"/>,
+        coupon_info.coupon_name
+        FROM
+        coupon_user AS coupon_user
+        LEFT JOIN coupon_info AS coupon_info ON coupon_user.coupon_id = coupon_info.id
+        <where>
+            AND coupon_user.del_flag = '0'
+            <if test="query.status !=null and query.status !=''">
+                AND coupon_user.`status`=#{query.status}
+            </if>
+            <if test="query.userId !=null and query.userId !=''">
+                AND coupon_user.`user_id`=#{query.userId}
+            </if>
+        </where>
+    </select>
+    <select id="selectApiPage" resultMap="pageResultMap">
+        SELECT
+        <include refid="couponUserSql"/>
+        FROM
+        coupon_user AS coupon_user
+        <if test="query.spuIds!=null">
+            LEFT JOIN coupon_info AS coupon_info
+            ON coupon_user.`coupon_id` = coupon_info.`id`
+            LEFT JOIN coupon_goods AS coupon_goods
+            ON coupon_info.`id` = coupon_goods.`coupon_id`
+        </if>
+        <where>
+            AND coupon_user.del_flag = '0'
+            <if test="query.userId !=null and query.userId !=''">
+                AND coupon_user.`user_id` =#{query.userId}
+            </if>
+            <if test="query.status !=null and query.status !=''">
+                <choose>
+                    <when test='query.status!=null  and query.status == "0"'>
+                        AND coupon_user.`status` ='0'
+                        AND coupon_user.`validat_time` > now()
+                    </when>
+                    <when test='query.status!=null  and query.status == "1"'>
+                        AND coupon_user.`status` ='1'
+                    </when>
+                    <when test='query.status!=null and query.status == "2"'>
+                        AND (coupon_user.`status` ='2' OR (coupon_user.`status` ='0' AND
+                        now()>coupon_user.`validat_time`) )
+                    </when>
+                    <otherwise>
+                        AND coupon_user.`status` =#{query.status}
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="query.spuIds !=null">
+                AND (coupon_info.use_range = '1' OR (coupon_info.use_range = '2' AND coupon_goods.spu_id IN
+                <foreach item="item" collection="query.spuIds" separator="," open="(" close=")" index="">
+                    #{item}
+                </foreach>
+                ))
+            </if>
+        </where>
+    </select>
+    <select id="selectExpireCouponList" resultType="com.haorong.cloud.promotion.api.entity.CouponUser">
+        SELECT
+        <include refid="couponUserSql"/>
+        FROM
+        coupon_user AS coupon_user
+        WHERE coupon_user.status in ('0','3')
+        AND now() >coupon_user.validat_time
+        AND coupon_user.del_flag = '0'
+    </select>
+
+    <select id="selectCountByCouponIds" resultType="com.haorong.cloud.promotion.api.vo.CouponUserVO">
+        SELECT
+        c.id AS id,
+        COUNT(cr.id) AS userReceiveCount
+        FROM
+        coupon_info c
+        LEFT JOIN
+        coupon_user cr ON c.id = cr.coupon_id
+        WHERE
+        c.id IN
+        <foreach collection="couponIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND c.del_flag = '0'
+        AND c.`receive_ended_at` > now()
+        AND now()> c.`receive_started_at`
+        GROUP BY
+        c.id;
+    </select>
+
+</mapper>

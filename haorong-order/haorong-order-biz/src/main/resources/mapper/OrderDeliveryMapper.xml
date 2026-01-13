@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.order.mapper.OrderDeliveryMapper">
+    <resultMap id="BaseResultMap" type="com.haorong.cloud.order.api.entity.OrderDelivery">
+        <collection property="logisticsList"  column="{deliveryId=id}"
+                    ofType="com.haorong.cloud.order.api.entity.OrderDeliveryLogistics"
+                    select="com.haorong.cloud.order.mapper.OrderDeliveryLogisticsMapper.selectByOrDeliveryId"></collection>
+     </resultMap>
+
+    <select id="selectByOrderId" resultMap="BaseResultMap">
+        SELECT
+        order_delivery.id,
+        order_delivery.order_id,
+        order_delivery.delivery_no,
+        order_delivery.logistics_company_name,
+        order_delivery.logistics_no,
+        order_delivery.logistics_company_code,
+        order_delivery.delivery_status,
+        order_delivery.deliver_time,
+        order_delivery.receiver_time,
+        order_delivery.remark,
+        order_delivery.create_time,
+        order_delivery.update_time,
+        order_delivery.del_flag,
+        order_delivery.create_by,
+        order_delivery.update_by,
+        order_delivery.tenant_id,
+        order_delivery.is_check
+        FROM
+        order_delivery AS order_delivery
+        <where>
+            AND order_delivery.del_flag = '0'
+            AND order_delivery.order_id = #{orderId}
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.pay.mapper.PayConfigMapper">
+
+    <sql id="payConfigSql">
+        pay_config
+        .
+        id
+        ,
+        pay_config.type,
+        pay_config.app_id,
+        pay_config.mch_id,
+        pay_config.mch_key,
+        pay_config.key_path,
+        pay_config.cert_serial_no,
+        pay_config.apiv3_key,
+        pay_config.private_key_path,
+        pay_config.private_cert_path,
+        pay_config.create_time,
+        pay_config.update_time,
+        pay_config.del_flag,
+        pay_config.terminal_type,
+        pay_config.tenant_id
+    </sql>
+    <select id="selectByAppId" resultType="com.haorong.cloud.pay.api.entity.PayConfig">
+        SELECT
+        <include refid="payConfigSql"/>
+        FROM
+        pay_config AS pay_config
+        WHERE pay_config.`app_id` = #{appId}
+    </select>
+    <select id="selectConfig" resultType="com.haorong.cloud.pay.api.vo.PayConfigVO">
+        SELECT
+        <include refid="payConfigSql"/>
+        FROM
+        pay_config AS pay_config
+        WHERE pay_config.`type` = #{payType}
+        AND pay_config.del_flag = '0'
+        AND pay_config.terminal_type = #{terminalType}
+    </select>
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.upms.mapper.SysMaterialGroupMapper">
+
+    <select id="selectMaterialGroupPage" resultType="com.haorong.cloud.upms.api.entity.SysMaterialGroup">
+        SELECT
+            sys_material_group.id,
+            sys_material_group.`name`,
+            sys_material_group.create_time,
+            sys_material_group.update_time,
+            sys_material_group.sort,
+            sys_material_group.type,
+            sys_material_group.tenant_id,
+            sys_material_group.create_by,
+            sys_material_group.update_by,
+            sys_material_group.del_flag
+        FROM
+            sys_material_group AS sys_material_group
+        <where>
+            AND  sys_material_group.del_flag = '0'
+        </where>
+    </select>
+    <select id="selectMaterialGroupList" resultType="com.haorong.cloud.upms.api.entity.SysMaterialGroup">
+        SELECT
+        sys_material_group.id,
+        sys_material_group.`name`,
+        sys_material_group.create_time,
+        sys_material_group.update_time,
+        sys_material_group.sort,
+        sys_material_group.type,
+        sys_material_group.tenant_id,
+        sys_material_group.create_by,
+        sys_material_group.update_by,
+        sys_material_group.del_flag
+        FROM
+        sys_material_group AS sys_material_group
+        <where>
+            AND  sys_material_group.del_flag = '0'
+            <if test="query.name != null and query.name != ''">
+                AND sys_material_group.`v`=#{query.name}
+            </if>
+        </where>
+    </select>
+</mapper>

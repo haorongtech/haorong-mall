@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.upms.mapper.SysStorageConfigMapper">
+
+    <sql id="sysStorageConfigSql">
+        sys_storage_config.id,
+	sys_storage_config.access_key,
+	sys_storage_config.access_secret,
+	sys_storage_config.endpoint,
+	sys_storage_config.bucket,
+	sys_storage_config.type,
+	sys_storage_config.create_time,
+	sys_storage_config.update_time,
+	sys_storage_config.dir,
+	sys_storage_config.is_https,
+	sys_storage_config.del_flag,
+	sys_storage_config.tenant_id,
+	sys_storage_config.create_by,
+	sys_storage_config.update_by,
+    sys_storage_config.status
+    </sql>
+    <select id="selectConfig" resultType="com.haorong.cloud.upms.api.dto.SysStorageConfigDTO">
+        SELECT
+        <include refid="sysStorageConfigSql"/>
+        FROM
+        sys_storage_config AS sys_storage_config
+        <where>
+            sys_storage_config.del_flag = '0'
+        AND sys_storage_config.`status` = '0'
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,16 @@
+seata:
+  enabled: true
+  tx-service-group: default_tx_group
+  service:
+    vgroup-mapping:
+      default_tx_group: default
+    grouplist:
+      default: haorong-pro-seata:8091
+  registry:
+    file:
+      name: file.conf
+    type: file
+  config:
+    file:
+      name: file.conf
+    type: file

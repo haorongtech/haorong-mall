@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.product.mapper.GoodsSkuMapper">
+    <sql id="goodsSkuSql">
+        goods_sku.id,
+        goods_sku.spu_id,
+        goods_sku.sales_price,
+        goods_sku.original_price,
+        goods_sku.cost_price,
+        goods_sku.stock,
+        goods_sku.`status`,
+        goods_sku.create_time,
+        goods_sku.update_time,
+        goods_sku.del_flag
+    </sql>
+    <resultMap id="goodsSkuResultMap" type="com.haorong.cloud.product.api.entity.GoodsSku">
+        <collection property="goodsSkuSpecsValues" column="{skuId=id}"
+                    ofType="com.haorong.cloud.product.api.entity.GoodsSkuSpecsValue"
+                    select="com.haorong.cloud.product.mapper.GoodsSkuSpecsValueMapper.selectBySkuId"></collection>
+    </resultMap>
+    <select id="selectBySpuId" resultMap="goodsSkuResultMap">
+        SELECT
+        <include refid="goodsSkuSql"/>
+        FROM goods_sku AS goods_sku
+        where goods_sku.`spu_id` = #{spuId}
+        AND goods_sku.`del_flag` = '0'
+    </select>
+    <select id="selectListByIds" resultMap="placeOrderSkuResultMap">
+        SELECT
+        <include refid="goodsSkuSql"/>
+        FROM
+        goods_sku AS goods_sku
+        WHERE
+        goods_sku.`status` = '0'
+        AND goods_sku.`del_flag` = '0'
+        AND goods_sku.id IN
+        <foreach item="item" collection="ids" separator="," open="(" close=")" index="">
+            #{item}
+        </foreach>
+    </select>
+    <select id="selectSkuByIds" resultMap="goodsSkuResultMap">
+        SELECT
+        <include refid="goodsSkuSql"/>
+        FROM
+        goods_sku AS goods_sku
+        WHERE
+        goods_sku.`status` = '0'
+        AND goods_sku.`del_flag` = '0'
+        AND goods_sku.id IN
+        <foreach item="item" collection="ids" separator="," open="(" close=")" index="">
+            #{item}
+        </foreach>
+    </select>
+    <resultMap id="placeOrderSkuResultMap" type="com.haorong.cloud.product.api.entity.GoodsSku">
+        <collection property="goodsSpu" column="{id=spu_id}"
+                    ofType="com.haorong.cloud.product.api.entity.GoodsSpu"
+                    select="com.haorong.cloud.product.mapper.GoodsSpuMapper.selectById"></collection>
+    </resultMap>
+</mapper>

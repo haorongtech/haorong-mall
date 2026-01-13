@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.upms.mapper.SysMaterialMapper">
+
+    <select id="selectMaterialPage" resultType="com.haorong.cloud.upms.api.entity.SysMaterial">
+        SELECT
+            sys_material.id,
+            sys_material.type,
+            sys_material.`name`,
+            sys_material.group_id,
+            sys_material.url,
+            sys_material.create_time,
+            sys_material.update_time,
+            sys_material.tenant_id,
+            sys_material.create_by,
+            sys_material.update_by,
+            sys_material.del_flag,
+            sys_material.file_size
+        FROM
+            sys_material AS sys_material
+        <where>
+            AND  sys_material.del_flag = '0'
+            <if test="query.groupId != null and query.groupId != ''">
+                AND sys_material.group_id=#{query.groupId}
+            </if>
+            <if test="query.name != null and query.name != ''">
+                AND sys_material.`name` LIKE CANCAT('%',#{query.name},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

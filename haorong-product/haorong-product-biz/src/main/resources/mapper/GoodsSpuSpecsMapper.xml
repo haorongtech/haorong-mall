@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.product.mapper.GoodsSpuSpecsMapper">
+    <sql id="goodsSpuSpecsSql">
+        goods_spu_specs
+        .
+        id
+        ,
+        goods_spu_specs.specs_id,
+        goods_spu_specs.spu_id,
+        goods_spu_specs.sort,
+        goods_spu_specs.create_time,
+        goods_spu_specs.update_time,
+        goods_spu_specs.del_flag
+    </sql>
+    <resultMap id="goodsSpuSpecsResultMap" type="com.haorong.cloud.product.api.entity.GoodsSpuSpecs">
+        <collection property="goodsSkuSpecsValues" column="{spuId=spu_id,specsId=specs_id}"
+                    ofType="com.haorong.cloud.product.api.entity.GoodsSpecs"
+                    select="com.haorong.cloud.product.mapper.GoodsSkuSpecsValueMapper.selectGoodsSkuSpecsValues"></collection>
+    </resultMap>
+    <select id="selectBySpuId" resultType="com.haorong.cloud.product.api.entity.GoodsSpuSpecs">
+        SELECT
+        <include refid="goodsSpuSpecsSql"/>
+        FROM goods_spu_specs AS goods_spu_specs
+        where goods_spu_specs.`spu_id` = #{spuId}
+        order by goods_spu_specs.`sort` asc
+    </select>
+
+    <select id="selectListBySpuId" resultMap="goodsSpuSpecsResultMap">
+        SELECT
+        <include refid="goodsSpuSpecsSql"/>,
+        goods_specs.`name` AS specsName
+        FROM goods_spu_specs AS goods_spu_specs
+        LEFT JOIN goods_specs AS goods_specs
+        ON goods_spu_specs.`specs_id` = goods_specs.`id`
+        where goods_spu_specs.`spu_id` = #{query.spuId}
+        AND goods_spu_specs.`del_flag` = '0'
+        AND goods_specs.`del_flag` = '0'
+        order by goods_spu_specs.`sort` asc
+    </select>
+    <select id="selectListBySpuId2" resultMap="goodsSpuSpecsResultMap">
+        SELECT
+        <include refid="goodsSpuSpecsSql"/>,
+        goods_specs.`name` AS specsName
+        FROM goods_spu_specs AS goods_spu_specs
+        LEFT JOIN goods_specs AS goods_specs
+        ON goods_spu_specs.`specs_id` = goods_specs.`id`
+        where goods_spu_specs.`spu_id` = #{spuId}
+        AND goods_spu_specs.`del_flag` = '0'
+        AND goods_specs.`del_flag` = '0'
+        order by goods_spu_specs.`sort` asc
+    </select>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.product.mapper.GoodsFootprintMapper">
+
+    <sql id="goodsFootprintSql">
+        goods_footprint
+        .
+        id
+        ,
+	goods_footprint.user_id,
+	goods_footprint.spu_id,
+	goods_footprint.create_time,
+	goods_footprint.del_flag
+    </sql>
+
+    <select id="apiPage" resultType="com.haorong.cloud.product.api.vo.GoodsFootprintDayVO">
+        SELECT
+            DATE(gf.create_time) AS browse_date,
+            JSON_ARRAYAGG(
+            JSON_OBJECT(
+            "spuId", gf.spu_id,
+            "createTime",  DATE_FORMAT(gf.create_time, '%Y-%m-%d %H:%i'),
+            "spuUrls", SUBSTRING_INDEX(gs.spu_urls, ',', 1),
+            "name", gs.name,
+            "stock", gs.stock,
+            "salesPrice", gs.sales_price
+            )
+            ) AS items
+        FROM goods_footprint AS gf
+            LEFT JOIN goods_spu AS gs ON gs.id = gf.spu_id
+        WHERE gf.user_id = #{query.userId}
+          AND gf.del_flag = '0'
+        GROUP BY browse_date
+        ORDER BY browse_date DESC
+    </select>
+</mapper>

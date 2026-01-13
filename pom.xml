@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <modules>
+        <module>haorong-gateway</module>
+        <module>haorong-auth</module>
+        <module>haorong-common</module>
+        <module>haorong-upms</module>
+        <module>haorong-miniapp</module>
+        <module>haorong-pay</module>
+        <module>haorong-visual</module>
+        <module>haorong-product</module>
+        <module>haorong-order</module>
+        <module>haorong-promotion</module>
+        <module>haorong-user</module>
+        <module>haorong-boot</module>
+    </modules>
+
+    <groupId>com.haorong</groupId>
+    <artifactId>haorong</artifactId>
+    <name>${project.artifactId}</name>
+    <description>浩荣微服务商城</description>
+    <version>3.1.0</version>
+    <packaging>pom</packaging>
+    <url>https://www.haorongtech.cn</url>
+
+    <properties>
+        <java.version>17</java.version>
+        <ttl.version>2.14.5</ttl.version>
+        <dubbo.version>3.2.14</dubbo.version>
+        <druid.version>1.2.24</druid.version>
+        <xxl-job.version>2.4.1</xxl-job.version>
+        <hutool.version>5.8.33</hutool.version>
+        <captcha.version>1.4.0</captcha.version>
+        <rocketmq.version>2.3.1</rocketmq.version>
+        <rocketmq-client.version>5.2.0</rocketmq-client.version>
+        <velocity.version>2.3</velocity.version>
+        <oshi-core.version>6.6.5</oshi-core.version>
+        <aliyun-oss.version>3.18.1</aliyun-oss.version>
+        <weixin-java.version>4.7.7.B</weixin-java.version>
+        <mybatis-plus.version>3.5.12</mybatis-plus.version>
+        <sa-token.version>1.44.0</sa-token.version>
+        <knife4j.version>4.6.0</knife4j.version>
+        <redisson.version>3.38.1</redisson.version>
+        <swagger.core.version>2.2.34</swagger.core.version>
+        <springdoc.version>2.8.8</springdoc.version>
+        <kuaidi100-api.version>1.0.15</kuaidi100-api.version>
+        <qiniu-sdk.version>7.17.0</qiniu-sdk.version>
+        <okhttp.version>4.12.0</okhttp.version>
+        <minio.version>8.4.3</minio.version>
+        <fastjson.version>2.0.57</fastjson.version>
+        <alipay-sdk.version>4.39.259.ALL</alipay-sdk.version>
+        <qcloud-cos-api.version>5.6.235</qcloud-cos-api.version>
+        <mysql.connector.version>9.2.0</mysql.connector.version>
+        <dynamic-datasource.version>4.3.1</dynamic-datasource.version>
+        <spring-javaformat.version>0.0.43</spring-javaformat.version>
+        <spring-boot.version>3.4.7</spring-boot.version>
+        <spring-boot-admin.version>3.4.7</spring-boot-admin.version>
+        <spring-cloud.version>2024.0.0</spring-cloud.version>
+        <spring-cloud-alibaba.version>2023.0.3.2</spring-cloud-alibaba.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!--Lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>${spring-boot-admin.version}</version>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-promotion-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-product-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-user-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-order-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--           支付公共模块-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-pay-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--           小程序服务公共模块-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-miniapp-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--            权限系统公共模块-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-upms-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--           redis 缓存-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-redis</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-dubbo</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--           seata分布式事务模块-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-seata</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--            sentinel模块 -->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-sentinel</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--           短信公共模块-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-sms</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--           核心模块-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--            文件存储模块-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-storage</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--           mybatis持久层框架模块-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-mybatis</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--            日志模块-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-log</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--            安全模块-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-security</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--           job模块-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-job</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--           物流模块-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-logistics</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--            swagger-->
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-swagger</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.haorong</groupId>
+                <artifactId>haorong-common-datasource</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!--滑块验证码-->
+            <dependency>
+                <groupId>com.anji-plus</groupId>
+                <artifactId>captcha-spring-boot-starter</artifactId>
+                <version>${captcha.version}</version>
+            </dependency>
+            <!--            七牛云-->
+            <dependency>
+                <groupId>com.qiniu</groupId>
+                <artifactId>qiniu-java-sdk</artifactId>
+                <version>${qiniu-sdk.version}</version>
+            </dependency>
+            <!--            阿里云 oss-->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun-oss.version}</version>
+            </dependency>
+            <!--            快递100sdk-->
+            <dependency>
+                <groupId>com.github.kuaidi100-api</groupId>
+                <artifactId>sdk</artifactId>
+                <version>${kuaidi100-api.version}</version>
+            </dependency>
+            <!--            腾讯cos-->
+            <dependency>
+                <groupId>com.qcloud</groupId>
+                <artifactId>cos_api</artifactId>
+                <version>${qcloud-cos-api.version}</version>
+            </dependency>
+            <!--            minio-->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
+            <!--fastjson -->
+            <dependency>
+                <groupId>com.alibaba.fastjson2</groupId>
+                <artifactId>fastjson2</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <!--mysql 驱动-->
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>${mysql.connector.version}</version>
+            </dependency>
+            <!--ttl-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${ttl.version}</version>
+            </dependency>
+            <!--            rocketmq-->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-client</artifactId>
+                <version>${rocketmq-client.version}</version>
+            </dependency>
+            <!--            hutool-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot3-starter</artifactId>
+                <version>${dynamic-datasource.version}</version>
+            </dependency>
+            <!--            knife4j https://github.com/xiaoymin/knife4j/issues/865#issuecomment-2568635671-->
+            <dependency>
+                <groupId>com.github.xingfudeshi</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
+                <version>4.5.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger.core.version}</version>
+            </dependency>
+            <!--           wxjava 小程序-->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-miniapp</artifactId>
+                <version>${weixin-java.version}</version>
+            </dependency>
+            <!--           wxjava 支付-->
+            <dependency>
+                <groupId>com.github.binarywang</groupId>
+                <artifactId>weixin-java-pay</artifactId>
+                <version>${weixin-java.version}</version>
+            </dependency>
+            <!-- velocity代码生成使用模板 -->
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>${velocity.version}</version>
+            </dependency>
+            <!--           Alipay sdk-->
+            <dependency>
+                <groupId>com.alipay.sdk</groupId>
+                <artifactId>alipay-sdk-java</artifactId>
+                <version>${alipay-sdk.version}</version>
+            </dependency>
+            <!-- Sa-Token 权限认证, 在线文档：http://sa-token.dev33.cn/ -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-spring-boot3-starter</artifactId>
+                <version>${sa-token.version}</version>
+            </dependency>
+            <!-- Sa-Token 整合 Redis （使用jackson序列化方式） -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-redis-jackson</artifactId>
+                <version>${sa-token.version}</version>
+            </dependency>
+            <!-- Sa-Token 整合 Dubbo -->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-dubbo3</artifactId>
+                <version>${sa-token.version}</version>
+            </dependency>
+            <!--redisson-->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+            <!--web 模块-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring-boot.version}</version>
+                <exclusions>
+                    <!--排除tomcat依赖-->
+                    <exclusion>
+                        <artifactId>spring-boot-starter-tomcat</artifactId>
+                        <groupId>org.springframework.boot</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!--			 https://mvnrepository.com/artifact/com.github.oshi/oshi-core -->
+            <dependency>
+                <groupId>com.github.oshi</groupId>
+                <artifactId>oshi-core</artifactId>
+                <version>${oshi-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-actuator</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-apache-dubbo3-adapter</artifactId>
+                <version>1.8.8</version>
+            </dependency>
+            <!-- optional -->
+            <dependency>
+                <groupId>com.alibaba.csp</groupId>
+                <artifactId>sentinel-transport-simple-http</artifactId>
+                <version>1.8.8</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-3-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!--            Spring Boot Admin-->
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>${spring-boot-admin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-bom</artifactId>
+                <version>${mybatis-plus.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring-boot.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <!--代码格式插件-->
+            <plugin>
+                <groupId>io.spring.javaformat</groupId>
+                <artifactId>spring-javaformat-maven-plugin</artifactId>
+                <version>${spring-javaformat.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>UTF-8</encoding>
+                    <parameters>true</parameters>
+                </configuration>
+            </plugin>
+        </plugins>
+        <defaultGoal>compile</defaultGoal>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>cloud</id>
+            <properties>
+                <!-- 环境标识，需要与配置文件的名称相对应 -->
+                <profiles.active>dev</profiles.active>
+                <nacos.username>nacos</nacos.username>
+                <nacos.password>nacos</nacos.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>boot</id>
+            <properties>
+                <!-- 环境标识，需要与配置文件的名称相对应 -->
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <activation>
+                <!-- 默认环境 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>haorong-boot</module>
+            </modules>
+        </profile>
+    </profiles>
+
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <id>public</id>-->
+    <!--            <name>aliyun nexus</name>-->
+    <!--            <url>https://maven.aliyun.com/repository/public</url>-->
+    <!--            <releases>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </releases>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
+
+    <!--    <pluginRepositories>-->
+    <!--        <pluginRepository>-->
+    <!--            <id>public</id>-->
+    <!--            <name>aliyun nexus</name>-->
+    <!--            <url>https://maven.aliyun.com/repository/public</url>-->
+    <!--            <releases>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </releases>-->
+    <!--            <snapshots>-->
+    <!--                <enabled>false</enabled>-->
+    <!--            </snapshots>-->
+    <!--        </pluginRepository>-->
+    <!--    </pluginRepositories>-->
+</project>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.product.mapper.GoodsCollectMapper">
+
+    <sql id="goodsCollectSql">
+        goods_collect
+        .
+        id
+        ,
+	    goods_collect.user_id,
+	    goods_collect.spu_id,
+    	goods_collect.sales_price,
+    	goods_collect.create_time,
+    	goods_collect.update_time,
+       	goods_collect.create_by,
+    	goods_collect.update_by,
+    	goods_collect.del_flag,
+	    goods_collect.tenant_id
+    </sql>
+    <resultMap id="collectResultMap" type="com.haorong.cloud.product.api.vo.GoodsCollectVO">
+        <collection property="goodsSpu" column="{id=spu_id}"
+                    ofType="com.haorong.cloud.product.api.entity.GoodsSku"
+                    select="com.haorong.cloud.product.mapper.GoodsSpuMapper.selectById"></collection>
+    </resultMap>
+    <select id="selectCollectPage" resultMap="collectResultMap">
+        SELECT
+        <include refid="goodsCollectSql"/>
+        FROM
+        goods_collect AS goods_collect
+        <where>
+            AND goods_collect.user_id= #{query.userId}
+        </where>
+    </select>
+</mapper>

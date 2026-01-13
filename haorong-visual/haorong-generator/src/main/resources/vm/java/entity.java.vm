@@ -1,0 +1,57 @@
+/**
+ * Copyright (c) 2025 沈阳浩荣科技有限公司
+ * All rights reserved.
+ *
+ * 注意：
+ * 本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。
+ */
+
+package ${packageName}.entity;
+
+import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+import java.time.LocalDateTime;
+
+/**
+ * ${functionName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+@Schema(description = "${functionName}")
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
+@TableName(value = "${table.tableName}")
+public class ${ClassName} extends Model<${ClassName}> {
+
+    private static final long serialVersionUID = 1L;
+
+    #foreach ($column in $columns)
+        #if(!$table.isSuperColumn($column.javaField))
+            /**
+             * ${column.columnComment}
+             */
+            @Schema(description = "${column.columnComment}")
+                #if($column.pk)
+                @TableId(type = IdType.ASSIGN_ID)
+                #else
+                    #if($column.javaField == 'delFlag')
+                    @TableLogic
+                    @TableField(fill = FieldFill.INSERT)
+                    #elseif($column.javaField == 'createBy' || $column.javaField == 'createTime')
+                    @TableField(fill = FieldFill.INSERT)
+                    #elseif($column.javaField == 'updateBy' || $column.javaField == 'updateTime')
+                    @TableField(fill = FieldFill.UPDATE)
+                    #end
+                #end
+            private $column.javaType $column.javaField;
+
+        #end
+    #end
+}

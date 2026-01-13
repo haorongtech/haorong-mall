@@ -1,0 +1,24 @@
+/**
+ * Copyright (c) 2025 沈阳浩荣科技有限公司
+ * All rights reserved.
+ * <p>
+ * 注意：
+ * 本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。
+ */
+
+package ${packageName}.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import ${packageName}.${moduleName}.api.entity.${ClassName};
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ *  ${functionName}
+ *
+ * @author ${author}
+ * @date  ${datetime}
+ */
+@Mapper
+public interface ${ClassName}Mapper extends BaseMapper<${ClassName}> {
+
+}

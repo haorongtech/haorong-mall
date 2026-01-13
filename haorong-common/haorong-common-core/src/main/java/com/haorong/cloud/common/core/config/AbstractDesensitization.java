@@ -1,0 +1,29 @@
+/**
+  * Copyright (c) 2025 沈阳浩荣科技有限公司
+  * All rights reserved.
+  * <p>
+  * 注意：
+  * 本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。
+
+  */
+package com.haorong.cloud.common.core.config;
+
+/**
+ * 脱敏父类 子类通过继承AbstractDesensitization实现扩展
+ *
+ * @author haorong
+ * @date 2022/5/31
+ */
+public abstract class AbstractDesensitization {
+
+	/**
+	 * 脱敏
+	 *
+	 * @author haorong
+	 * @date 2022/5/31
+	 * @param value
+	 * @return: java.lang.String
+	 */
+	public abstract String serialize(String value);
+
+}

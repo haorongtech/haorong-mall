@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>haorong-common</artifactId>
+        <groupId>com.haorong</groupId>
+        <version>3.1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>haorong-common-seata</artifactId>
+    <description>seata分布式事务</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.haorong</groupId>
+            <artifactId>haorong-common-core</artifactId>
+        </dependency>
+        <!-- seata-->
+         <dependency>
+             <groupId>com.alibaba.cloud</groupId>
+             <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+             <exclusions>
+                 <exclusion>
+                     <groupId>org.apache.dubbo.extensions</groupId>
+                     <artifactId>dubbo-filter-seata</artifactId>
+                 </exclusion>
+             </exclusions>
+         </dependency>
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-starter</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+</project>

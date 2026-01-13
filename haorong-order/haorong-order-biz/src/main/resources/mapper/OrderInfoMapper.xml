@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.order.mapper.OrderInfoMapper">
+    <sql id="orderSql">
+        order_info
+        .
+        id
+        ,
+	order_info.user_id,
+	order_info.delivery_way,
+	order_info.order_no,
+	order_info.payment_type,
+	order_info.trade_type,
+	order_info.remark,
+	order_info.pay_status,
+	order_info.`status`,
+	order_info.appraise_status,
+	order_info.total_price,
+	order_info.freight_price,
+	order_info.coupon_price,
+	order_info.payment_price,
+	order_info.create_time,
+	order_info.update_time,
+	order_info.del_flag,
+	order_info.payment_time,
+	order_info.deliver_time,
+	order_info.cancel_time,
+	order_info.receiver_time,
+	order_info.transaction_id,
+    order_info.recipient_name,
+    order_info.recipient_phone,
+    order_info.recipient_province,
+    order_info.recipient_city,
+    order_info.recipient_area,
+    order_info.recipient_address,
+    order_info.app_id
+    </sql>
+    <select id="selectAdminPage" resultMap="adminPageResultMap">
+        SELECT
+        <include refid="orderSql"/>
+        FROM
+        order_info AS order_info
+        <where>
+            AND order_info.`del_flag` = '0'
+            <if test="query.status != null and query.status != ''">
+                AND order_info.`status` = #{query.status}
+            </if>
+            <if test="query.paymentType != null and query.paymentType != ''">
+                AND order_info.`payment_type` = #{query.paymentType}
+            </if>
+            <if test="query.deliveryWay != null and query.deliveryWay != ''">
+                AND order_info.`delivery_way` = #{query.deliveryWay}
+            </if>
+            <if test="query.userId != null and query.userId != ''">
+                AND order_info.`user_id` = #{query.userId}
+            </if>
+            <if test="query.payStatus != null and query.payStatus != ''">
+                AND order_info.`pay_status` = #{query.payStatus}
+            </if>
+            <if test="query.id != null and query.id != ''">
+                AND order_info.`id` = #{query.id}
+            </if>
+            <if test="query.paymentQueryTimes != null and query.paymentQueryTimes.length > 0">
+                AND order_info.`payment_time` >= #{query.paymentQueryTimes[0]} AND
+                #{query.paymentQueryTimes[1]}>=order_info.`payment_time`
+            </if>
+            <if test="query.orderNo != null and query.orderNo != ''">
+                AND order_info.`order_no` = #{query.orderNo}
+            </if>
+            <if test="query.recipientName != null and query.recipientName != ''">
+                AND order_info.`recipient_name` = #{query.recipientName}
+            </if>
+            <if test="query.recipientPhone != null and query.recipientPhone != ''">
+                AND order_info.`recipient_phone` = #{query.recipientPhone}
+            </if>
+        </where>
+    </select>
+    <select id="selectOrderById" resultMap="resultMap">
+        SELECT
+        <include refid="orderSql"/>
+        FROM
+        order_info AS order_info
+        where order_info.`id` = #{id}
+    </select>
+    <select id="selectPaySumStatistics" resultType="java.math.BigDecimal">
+        SELECT
+        IFNULL( SUM( order_info.payment_price ), 0 )
+        FROM
+        order_info AS order_info
+        <where>
+            <if test="query.payStatus !=null and query.payStatus !=''">
+                AND order_info.`pay_status` = #{query.payStatus}
+            </if>
+            <if test="query.paymentType !=null and query.paymentType !=''">
+                AND order_info.`payment_type` = #{query.paymentType}
+            </if>
+            <if test="query.beginTime !=null">
+                AND order_info.`create_time` >= #{query.beginTime}
+            </if>
+            <if test="query.endTime !=null">
+                AND #{query.endTime} >= order_info.`create_time`
+            </if>
+        </where>
+    </select>
+
+    <resultMap id="resultMap" type="com.haorong.cloud.order.api.entity.OrderInfo">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <collection property="orderItemList" column="{orderId=id}"
+                    ofType="com.haorong.cloud.order.api.entity.OrderItemEntity"
+                    select="com.haorong.cloud.order.mapper.OrderItemMapper.selectByOrderId"></collection>
+        <collection property="orderDelivery" column="{orderId=id}"
+                    ofType="com.haorong.cloud.order.api.entity.OrderDelivery"
+                    select="com.haorong.cloud.order.mapper.OrderDeliveryMapper.selectByOrderId"></collection>
+
+    </resultMap>
+
+    <resultMap id="adminPageResultMap" type="com.haorong.cloud.order.api.entity.OrderInfo">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <collection property="orderItemList" column="{orderId=id}"
+                    ofType="com.haorong.cloud.order.api.entity.OrderItemEntity"
+                    select="com.haorong.cloud.order.mapper.OrderItemMapper.selectByOrderId"></collection>
+    </resultMap>
+
+    <select id="selectApiPage" resultMap="resultMap">
+        SELECT
+        <include refid="orderSql"/>
+        FROM
+        order_info AS order_info
+        <where>
+            AND order_info.`del_flag` = '0'
+            <if test="query.status != null and query.status != ''">
+                AND order_info.`status` = #{query.status}
+            </if>
+            <if test="query.appraiseStatus != null and query.appraiseStatus != ''">
+                AND order_info.`appraise_status` = #{query.appraiseStatus}
+            </if>
+            <if test="query.userId != null and query.userId != ''">
+                AND order_info.`user_id` = #{query.userId}
+            </if>
+            <if test="query.keyword != null and query.keyword != ''">
+                AND EXISTS (
+                SELECT 1
+                FROM order_item AS order_item
+                WHERE order_item.order_id = order_info.id
+                AND order_item.spu_name LIKE CONCAT('%', #{query.keyword}, '%')
+                )
+            </if>
+
+        </where>
+    </select>
+    <select id="selectPayAmount" resultType="java.math.BigDecimal">
+        SELECT SUM(order_info.payment_price)
+        FROM order_info AS order_info
+        WHERE order_info.del_flag = '0'
+        AND order_info.pay_status = '1'
+        <if test="query.beginTime !=null">
+            AND order_info.create_time >= #{query.beginTime}
+        </if>
+        <if test="query.endTime !=null">
+            AND #{query.endTime} >= order_info.create_time
+        </if>
+    </select>
+    <select id="selectPayCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM order_info AS order_info
+        WHERE order_info.del_flag = '0'
+        AND order_info.pay_status = '1'
+        <if test="query.beginTime !=null">
+            AND order_info.create_time >= #{query.beginTime}
+        </if>
+        <if test="query.endTime !=null">
+            AND #{query.endTime} >= order_info.create_time
+        </if>
+    </select>
+    <select id="payTypeStatistics" resultType="com.haorong.cloud.order.api.vo.OrderStatisticsVO">
+        SELECT '微信'   AS title,
+               COUNT(1) AS count
+        FROM order_info AS order_info
+        WHERE order_info.del_flag = '0'
+          AND order_info.pay_status = '1'
+          AND order_info.payment_type = '1'
+        UNION ALL
+        SELECT '支付宝' AS title,
+               COUNT(1) AS count
+        FROM order_info AS order_info
+        WHERE order_info.del_flag = '0'
+          AND order_info.pay_status = '1'
+          AND order_info.payment_type = '2'
+    </select>
+    <select id="channelTypeStatistics" resultType="com.haorong.cloud.order.api.vo.OrderStatisticsVO">
+        SELECT
+            '微信小程序' AS title,
+            COUNT( 1 ) AS count
+        FROM
+            order_info AS order_info
+        WHERE
+            order_info.del_flag = '0'
+          AND order_info.pay_status = '1'
+          AND order_info.channel_type = '1' UNION ALL
+        SELECT
+            '普通H5' AS title,
+            COUNT( 1 ) AS count
+        FROM
+            order_info AS order_info
+        WHERE
+            order_info.del_flag = '0'
+          AND order_info.pay_status = '1'
+          AND order_info.channel_type = '2' UNION ALL
+        SELECT
+            'APP' AS title,
+            COUNT( 1 ) AS count
+        FROM
+            order_info AS order_info
+        WHERE
+            order_info.del_flag = '0'
+          AND order_info.pay_status = '1'
+          AND order_info.channel_type = '3'
+    </select>
+</mapper>

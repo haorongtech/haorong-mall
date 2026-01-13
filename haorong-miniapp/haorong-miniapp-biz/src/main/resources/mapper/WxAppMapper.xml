@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.miniapp.mapper.WxAppMapper">
+
+    <sql id="wxAppSql">
+        wx_app
+        .
+        app_id
+        ,
+        wx_app.app_name,
+        wx_app.app_secret,
+        wx_app.mini_code_url,
+        wx_app.create_time,
+        wx_app.update_time,
+        wx_app.del_flag,
+        wx_app.token,
+        wx_app.aes_key,
+        wx_app.tenant_id
+    </sql>
+    <select id="selectByAppId" resultType="com.haorong.cloud.miniapp.api.vo.WxAppV0">
+        SELECT
+        <include refid="wxAppSql"/>
+        FROM wx_app AS wx_app
+        WHERE wx_app.app_id = #{appId}
+    </select>
+    <select id="selectWxAppPage" resultType="com.haorong.cloud.miniapp.api.vo.WxAppV0">
+        SELECT
+        <include refid="wxAppSql"/>
+        FROM
+        wx_app AS wx_app
+        <where>
+            AND wx_app.`del_flag` = '0'
+            <if test="query.appId !=null and query.appId !=''">
+                AND wx_app.`app_id` =#{query.appId}
+            </if>
+            <if test="query.appName !=null and query.appName !=''">
+                AND wx_app.`app_id` LIKE CONCAT('%',#{query.appName},'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectWxAppByAppId" resultType="com.haorong.cloud.miniapp.api.vo.WxAppV0">
+        SELECT
+        <include refid="wxAppSql"/>
+        FROM wx_app AS wx_app
+        WHERE wx_app.app_id = #{appId}
+    </select>
+</mapper>

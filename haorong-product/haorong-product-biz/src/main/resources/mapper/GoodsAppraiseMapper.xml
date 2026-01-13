@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.product.mapper.GoodsAppraiseMapper">
+
+    <select id="selectGoodsAppraiseCount" resultType="com.haorong.cloud.product.api.vo.AppraiseCountVO">
+        SELECT
+        COUNT( 1 ) AS allCount,
+        SUM( CASE WHEN goods_appraise.goods_score >= 4 THEN 1 ELSE 0 END ) AS goodCount,
+        SUM( CASE WHEN goods_appraise.goods_score = 3 THEN 1 ELSE 0 END ) AS badCount,
+        SUM( CASE WHEN 2 >=goods_appraise.goods_score THEN 1 ELSE 0 END ) AS negativeCount,
+        SUM( CASE WHEN goods_appraise.pic_urls IS NOT NULL AND goods_appraise.pic_urls != '' THEN 1 ELSE 0 END ) AS imageCount
+        FROM
+        goods_appraise AS goods_appraise
+        <where>
+            AND goods_appraise.del_flag='0'
+            <if test="query.spuId != null and query.spuId != ''">
+                AND goods_appraise.`spu_id` = #{query.spuId}
+            </if>
+            <if test="query.userId != null and query.userId != ''">
+                AND goods_appraise.`user_id` = #{query.userId}
+            </if>
+        </where>
+    </select>
+    <select id="selectAppraisePage" resultType="com.haorong.cloud.product.api.entity.GoodsAppraise">
+        SELECT
+            goods_spu.`name` AS spuName,
+            goods_spu.spu_urls,
+            goods_appraise.id,
+            goods_appraise.spu_id,
+            goods_appraise.order_id,
+            goods_appraise.order_item_id,
+            goods_appraise.user_id,
+            goods_appraise.avatar_url,
+            goods_appraise.nick_name,
+            goods_appraise.create_time,
+            goods_appraise.del_flag,
+            goods_appraise.update_time,
+            goods_appraise.pic_urls,
+            goods_appraise.goods_score,
+            goods_appraise.logistics_score,
+            goods_appraise.service_score,
+            goods_appraise.business_reply,
+            goods_appraise.reply_time,
+            goods_appraise.content,
+            goods_appraise.tenant_id,
+            goods_appraise.create_by,
+            goods_appraise.update_by
+        FROM
+            goods_appraise AS goods_appraise
+                LEFT JOIN goods_spu AS goods_spu ON goods_spu.id = goods_appraise.spu_id
+        <where>
+            AND  goods_appraise.del_flag = '0'
+            <if test="query.nickName != null and query.nickName != ''">
+                AND goods_appraise.nick_name = #{query.nickName}
+            </if>
+        </where>
+    </select>
+</mapper>

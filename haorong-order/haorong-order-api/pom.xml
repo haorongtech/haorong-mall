@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>haorong-order</artifactId>
+        <groupId>com.haorong</groupId>
+        <version>3.1.0</version>
+    </parent>
+
+    <artifactId>haorong-order-api</artifactId>
+
+    <description>商城订单公共模块</description>
+    <dependencies>
+        <dependency>
+            <groupId>com.haorong</groupId>
+            <artifactId>haorong-common-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.haorong</groupId>
+            <artifactId>haorong-common-mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.haorong</groupId>
+            <artifactId>haorong-pay-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.haorong</groupId>
+            <artifactId>haorong-product-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.haorong</groupId>
+            <artifactId>haorong-promotion-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.haorong</groupId>
+            <artifactId>haorong-user-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.haorong</groupId>
+            <artifactId>haorong-miniapp-api</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

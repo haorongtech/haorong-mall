@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haorong.cloud.order.mapper.OrderRefundMapper">
+
+    <sql id="orderRefundSql">
+        order_refund.id,
+        order_refund.order_id,
+        order_refund.order_item_id,
+        order_refund.`status`,
+        order_refund.`refund_type`,
+        order_refund.arrival_status,
+        order_refund.create_time,
+        order_refund.update_time,
+        order_refund.del_flag,
+        order_refund.refund_amount,
+        order_refund.refund_trade_no,
+        order_refund.refund_reason,
+        order_refund.refuse_reason,
+        order_refund.user_received_account,
+        order_refund.refund_id
+    </sql>
+    <resultMap id="orderRefundMap" type="com.haorong.cloud.order.api.entity.OrderRefund">
+        <collection property="orderItem" column="{id=order_item_id}"
+                    ofType="com.haorong.cloud.order.api.entity.OrderItemEntity"
+                    select="com.haorong.cloud.order.mapper.OrderItemMapper.selectById"></collection>
+    </resultMap>
+    <select id="selectAdminPage" resultMap="orderRefundMap">
+        SELECT
+        <include refid="orderRefundSql"/>
+        FROM
+        order_refund AS order_refund
+        <where>
+            <if test="query.status != null and query.status != ''">
+                AND order_refund.`status` =#{query.status}
+            </if>
+            <if test="query.arrivalStatus != null and query.arrivalStatus != ''">
+                AND order_refund.`arrival_status` =#{query.arrivalStatus}
+            </if>
+            <if test="query.userId != null and query.userId != ''">
+                AND order_refund.`user_id` = #{query.userId}
+            </if>
+        </where>
+    </select>
+    <select id="selectRefundById" resultMap="orderRefundMap">
+        SELECT
+        <include refid="orderRefundSql"/>
+        FROM
+        order_refund AS order_refund
+        WHERE  order_refund.`id` = #{id}
+    </select>
+
+    <select id="selectByOrderItemId" resultType="com.haorong.cloud.order.api.entity.OrderRefund">
+        SELECT
+        <include refid="orderRefundSql"/>
+        FROM
+        order_refund AS `order_refund`
+        WHERE `order_refund`.`order_item_id`= #{orderItemId}
+        ORDER BY `order_refund`.`create_time` DESC
+        LIMIT 1
+    </select>
+    <select id="selectRefundAmount" resultType="java.math.BigDecimal">
+        SELECT
+        SUM( order_refund.refund_amount )
+        FROM
+        order_refund AS order_refund
+        WHERE
+        order_refund.del_flag = '0'
+        AND order_refund.`status` IN (
+        '11',
+        '12')
+        <if test="query.beginTime !=null">
+            AND order_refund.update_time >= #{query.beginTime}
+        </if>
+        <if test="query.endTime !=null">
+            AND #{query.beginTime} >= order_refund.update_time
+        </if>
+    </select>
+    <select id="selectRefundCount" resultType="java.lang.Integer">
+        SELECT
+        COUNT( 1 )
+        FROM
+        order_refund AS order_refund
+        WHERE
+        order_refund.del_flag = '0'
+        AND order_refund.`status` IN (
+        '11',
+        '12')
+        <if test="query.beginTime !=null">
+            AND order_refund.update_time >= #{query.beginTime}
+        </if>
+        <if test="query.endTime !=null">
+            AND #{query.beginTime} >= order_refund.update_time
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,2 @@
+  com.haorong.cloud.common.sms.properties.AliSmsProperties
+  com.haorong.cloud.common.sms.util.AliSmsUtils

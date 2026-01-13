@@ -1,0 +1,161 @@
+<script lang="ts" setup>
+  import type {FormInstance} from 'element-plus';
+  import {ElMessage,} from 'element-plus';
+
+  import {reactive, ref} from 'vue';
+
+  import {addObj, editObj, getById} from '#/api/${moduleName}/${businessName}';
+
+  const emit = defineEmits(['initPage']);
+
+  const state = reactive({
+    form: {
+      #foreach ($column in $columns)
+          $column.javaField: null#if($foreach.count != $columns.size()),#end
+      #end
+    },
+    rules: {},
+  });
+  const dialog = ref(false);
+  const loading = ref(false);
+  const formRef = ref();
+
+  const initForm = (row: any | undefined) => {
+    dialog.value = true;
+    if (row && row.id) {
+      state.form.id = row.id;
+      getDetail(row.id);
+    }
+  };
+  const getDetail = (id: string) => {
+    loading.value = true;
+    getById(id).then((response) => {
+      state.form = response;
+      loading.value = false;
+    });
+  };
+  /**
+   * 关闭事件
+   */
+  const handleClose = () => {
+    resetForm(formRef.value);
+  };
+  /**
+   * 重置表单
+   */
+  const resetForm = (formEl: FormInstance | undefined) => {
+    if (!formEl) return;
+    state.form.id = null;
+    dialog.value = false;
+    formEl.resetFields();
+  };
+  /**
+   * 提交按钮
+   */
+  const submitForm = async (formEl: FormInstance | undefined) => {
+    if (!formEl) return;
+    await formEl.validate((valid) => {
+      if (valid) {
+        loading.value = true;
+        if (state.form.id) {
+          // 修改
+          edit();
+        } else {
+          // 新增
+          add();
+        }
+      }
+    });
+  };
+  /**
+   * 新增
+   */
+  const add = async () => {
+    try {
+      await addObj(state.form)
+      resetForm(formRef.value);
+      ElMessage.success('新增成功');
+      emit('initPage');
+    } finally {
+      loading.value = false;
+    }
+  };
+  /**
+   * 修改
+   */
+  const edit = async () => {
+    try {
+      await editObj(state.form)
+      resetForm(formRef.value);
+      ElMessage.success('修改成功');
+      emit('initPage');
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  defineExpose({
+    initForm,
+  });
+</script>
+<template>
+  <div>
+    <ElDialog
+            v-model="dialog"
+            :title="state.form.id ? '修改${functionName}' : '新增${functionName}'"
+            width="60%"
+            :before-close="handleClose"
+    >
+      <ElForm
+              ref="formRef"
+              :model="state.form"
+              label-width="120px"
+              :rules="state.rules"
+      >
+        #foreach($column in $columns)
+          #set($field = $column.javaField)
+          #if($column.isInsert && !$column.isPk)
+            #set($parentheseIndex=$column.columnComment.indexOf("（"))
+            #if($parentheseIndex != -1)
+              #set($comment=$column.columnComment.substring(0, $parentheseIndex))
+            #else
+              #set($comment=$column.columnComment)
+            #end
+
+            #if($column.htmlType == "input")
+              <ElFormItem label="${comment}" prop="${field}">
+                <ElInput v-model="state.form.${field}" placeholder="请输入${comment}" />
+              </ElFormItem>
+            #elseif($column.htmlType == "textarea")
+              <ElFormItem label="${comment}" prop="${field}">
+                <ElInput v-model="state.form.${field}" type="textarea" placeholder="请输入${comment}" />
+              </ElFormItem>
+            #elseif($column.htmlType == "select")
+              <ElFormItem label="${comment}" prop="${field}">
+                <ElSelect v-model="state.form.${field}" placeholder="请选择${comment}">
+                  <!-- TODO: options -->
+                </ElSelect>
+              </ElFormItem>
+            #elseif($column.htmlType == "date")
+              <ElFormItem label="${comment}" prop="${field}">
+                <ElDatePicker v-model="state.form.${field}" placeholder="请选择${comment}" />
+              </ElFormItem>
+            #end
+          #end
+        #end
+      </ElForm>
+      <template #footer>
+        <span class="dialog-footer">
+          <ElButton @click="handleClose">关 闭</ElButton>
+          <ElButton
+                  type="primary"
+                  :loading="loading"
+                  @click="submitForm(formRef)"
+          >
+            确 认
+          </ElButton>
+        </span>
+      </template>
+    </ElDialog>
+  </div>
+</template>

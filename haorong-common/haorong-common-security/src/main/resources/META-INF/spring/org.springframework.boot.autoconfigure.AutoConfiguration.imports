@@ -1,0 +1,5 @@
+  com.haorong.cloud.common.security.handler.HxGlobalExceptionHandlerResolver
+  com.haorong.cloud.common.security.config.SaTokenConfigure
+  com.haorong.cloud.common.security.service.impl.HxPermissionsImpl
+  com.haorong.cloud.common.security.aspect.HxInnerAopAspect
+

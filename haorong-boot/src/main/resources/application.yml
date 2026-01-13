@@ -1,0 +1,193 @@
+server:
+  port: 9999
+  servlet:
+    context-path: /boot
+spring:
+  application:
+    name: @project.artifactId@
+  cloud:
+    nacos:
+      config:
+        enabled: false
+      discovery:
+        enabled: false
+  main:
+    allow-bean-definition-overriding: true # 允许覆盖bean定义
+  profiles:
+    active: dev  # 单体环境
+
+jackson:
+  default-property-inclusion: always
+  date-format: yyyy-mm-dd hh:mm:ss
+
+sa-token:
+  token-name: satoken
+  timeout: 2592000
+  active-timeout: -1
+  is-concurrent: true
+  is-share: false
+  is-read-cookie: false
+  token-style: uuid
+  is-log: true
+  is-print: false
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  type-handlers-package: com.haorong.cloud.common.myabtis.handler
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+      where-strategy: not_empty
+      insert-strategy: not_empty
+      update-strategy: not_null
+  configuration:
+    jdbc-type-for-null: 'null'
+    call-setters-on-nulls: true
+    shrink-whitespaces-in-sql: true
+
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'boot'
+      paths-to-match: '/**'
+      #生成文档所需的扫包路径，一般为启动类目录
+      packages-to-scan: com.haorong.cloud
+
+logging:
+  level:
+    com.haorong.cloud.upms.mapper: DEBUG
+    com.haorong.cloud.user.mapper: DEBUG
+    com.haorong.cloud.distribution.mapper: DEBUG
+    com.haorong.cloud.miniapp.mapper: DEBUG
+    com.haorong.cloud.order.mapper: DEBUG
+    com.haorong.cloud.pay.mapper: DEBUG
+    com.haorong.cloud.product.mapper: DEBUG
+    com.haorong.cloud.promotion.mapper: DEBUG
+    org.mybatis.spring.SqlSessionFactoryBean: DEBUG
+
+callback:
+  prefix:
+    pay: boot
+    logistics: boot
+
+dubbo:
+  scan:
+    base-packages: com.haorong.cloud
+  application:
+    name: haorong-boot
+    # 暂时解决dubbo 反序列化问题
+    serialize-check-status: WARN
+  protocol:
+    name: injvm
+    port: -1
+  registry:
+    address: N/A
+  provider:
+    filter: -exception
+seata:
+  enabled: false
+
+secure:
+  ignore:
+    urls:
+      - /swagger-resources/**
+      - /webjars/**
+      - /v3/api-docs/**
+      - /swagger-ui.html/**
+      - /doc.html/**
+      - /error/**
+      - /favicon.ico/**
+      - /swagger-ui/**
+      - /actuator/**
+      - /token/**
+      - /toc-token/**
+      - /code/**
+      - /sms/**
+      - /user/check/phone
+      - /tenant/register
+      - /tenantpackage/list
+      - /notify/**
+      - /app/couponinfo/page
+      - /app/pagedesign/**
+      - /app/goodscategory/tree
+      - /app/goodsappraise/**
+      - /app/goodscategory/**
+      - /app/sku/**
+      - /app/goodsspu/**
+      - /app/goodsspuspecs/**
+
+hx:
+  cloud:
+    enable: false
+  tenant:
+    tables:
+      - user_address
+      - user_info
+      - sys_user
+      - sys_user_role
+      - sys_storage_config
+      - sys_role_menu
+      - sys_role
+      - sys_login_log
+      - sys_log
+      - sys_dept
+      - sys_tenant_menu
+      - sys_material
+      - sys_material_group
+      - goods_appraise
+      - goods_category
+      - goods_sku
+      - goods_sku_specs_value
+      - goods_specs
+      - goods_specs_value
+      - goods_spu
+      - goods_spu_specs
+      - goods_shop_category
+      - goods_collect
+      - goods_footprint
+      - coupon_goods
+      - coupon_info
+      - coupon_user
+      - pay_config
+      - pay_trade_order
+      - pay_notify_record
+      - pay_refund_order
+      - page_design
+      - order_info
+      - order_item
+      - order_delivery
+      - order_delivery_item
+      - order_delivery_logistics
+      - order_refund
+      - order_config
+      - shopping_cart
+      - wx_app
+      - wx_user
+
+  swagger:
+    enabled: true
+    title: Hx Mall API
+    description: Hx Mall API Document
+    version: v3.1.0
+    author: haorong
+    email: haorongtech@163.com
+    license: MIT
+    license-url: https://gitee.com/lijiaxing_boy/haorong-mall/blob/master/LICENSE
+
+# 代码生成
+gen:
+  # 作者
+  author: haorong
+  # 默认生成包路径 system 需改成自己的模块名称 如 system monitor tool
+  packageName: com.haorong.cloud
+  # 自动去除表前缀，默认是false
+  autoRemovePre: false
+  # 表前缀（生成类名不会包含表前缀，多个用逗号分隔）
+  tablePrefix: sys_
+  # 是否允许生成文件覆盖到本地（自定义路径），默认不允许
+  allowOverwrite: false

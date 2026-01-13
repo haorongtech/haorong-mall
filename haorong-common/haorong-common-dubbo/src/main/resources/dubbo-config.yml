@@ -1,0 +1,39 @@
+#微服务
+dubbo:
+  scan:
+    base-packages: com.haorong.cloud
+  application:
+    logger: slf4j
+    # qos-server 关闭防止端口冲突
+    qos-enable: false
+    #暂时解决dubbo 反序列化问题
+    serialize-check-status: WARN
+  protocol:
+    name: dubbo
+    port: -1
+  #消费者配置
+  consumer:
+    injvm: false
+    # 启动时不检查服务是否可用
+    check: false
+    # 超时时间
+    timeout: 5000
+  #注册中心配置
+  registry:
+    address: nacos://${spring.cloud.nacos.discovery.server-addr}
+    register-mode: instance
+    username: ${spring.cloud.nacos.username}
+    password: ${spring.cloud.nacos.password}
+    parameters:
+      namespace: dubbo
+      group: DUBBO_GROUP
+  provider:
+    filter: -exception
+  #元数据中心配置
+  metadata-report:
+    address: nacos://${spring.cloud.nacos.discovery.server-addr}
+    username: ${spring.cloud.nacos.username}
+    password: ${spring.cloud.nacos.password}
+    parameters:
+      namespace: dubbo
+      group: DUBBO_GROUP

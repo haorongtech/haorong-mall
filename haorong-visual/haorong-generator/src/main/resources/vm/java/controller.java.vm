@@ -1,0 +1,80 @@
+/**
+ * Copyright (c) 2025 沈阳浩荣科技有限公司
+ * All rights reserved.
+ * <p>
+ * 注意：
+ * 本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。
+ */
+
+package ${packageName}.controller;
+
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.haorong.cloud.common.core.util.Result;
+import com.haorong.cloud.common.log.annotation.SysLog;
+import ${packageName}.${moduleName}.api.entity.${ClassName};
+import ${packageName}.${moduleName}.service.I${ClassName}Service;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ *  ${functionName}
+ *
+ * @author ${author}
+ * @date  ${datetime}
+ */
+@Slf4j
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/${businessName}")
+@Tag(description = "${businessName}", name = "${functionName}")
+public class ${ClassName}Controller {
+
+    private final I${ClassName}Service ${className}Service;
+
+
+    @Operation(summary = "${functionName}列表")
+    @SaCheckPermission("${permissionPrefix}:page")
+    @GetMapping("/page")
+    public Result<IPage<${ClassName}>> page(Page page, ${ClassName} ${className}) {
+        return Result.success(${className}Service.page(page, Wrappers.query(${className})));
+    }
+
+    @Operation(summary = "通过id查询${functionName}")
+    @SaCheckPermission("${permissionPrefix}:get")
+    @GetMapping("/{id}")
+    public Result<${ClassName}> getById(@PathVariable String id) {
+        return Result.success(${className}Service.getById(id));
+    }
+
+    @SysLog("新增${functionName}")
+    @Operation(summary = "${functionName}新增")
+    @SaCheckPermission("${permissionPrefix}:add")
+    @PostMapping
+    public Result<Boolean> add(@RequestBody ${ClassName} ${className}) {
+        return Result.success(${className}Service.save(${className}));
+    }
+
+    @SysLog("修改${functionName}")
+    @Operation(summary = "${functionName}修改")
+    @SaCheckPermission("${permissionPrefix}:edit")
+    @PutMapping
+    public Result<Boolean> edit(@RequestBody ${ClassName} ${className}) {
+        return Result.success(${className}Service.updateById(${className}));
+    }
+
+    @SysLog("删除${functionName}")
+    @Operation(summary = "${functionName}删除")
+    @SaCheckPermission("${permissionPrefix}:del")
+    @DeleteMapping("/{id}")
+    public Result<Boolean> del(@PathVariable String id) {
+        return Result.success(${className}Service.removeById(id));
+    }
+
+}

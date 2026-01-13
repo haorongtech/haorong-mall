@@ -1,0 +1,27 @@
+/**
+  * Copyright (c) 2025 沈阳浩荣科技有限公司
+  * All rights reserved.
+  * <p>
+  * 注意：
+  * 本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。
+
+  */
+package com.haorong.cloud.product.api.remote;
+
+import com.haorong.cloud.product.api.dto.GoodsSpuSalesVolumeReqDTO;
+import com.haorong.cloud.product.api.entity.GoodsSpu;
+
+import java.util.List;
+
+/**
+ * @author haorong
+ */
+public interface RemoteGoodsSpuService {
+
+	boolean updateSalesVolume(List<GoodsSpuSalesVolumeReqDTO> list);
+
+	GoodsSpu getBySpuId(String id);
+
+	List<GoodsSpu> getBySpuIds(List<String> ids);
+
+}

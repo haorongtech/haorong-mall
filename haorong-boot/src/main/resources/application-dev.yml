@@ -1,0 +1,70 @@
+spring:
+  servlet:
+    multipart:
+      maxFileSize: 100MB
+      maxRequestSize: 100MB
+  cache:
+    type: redis # 缓存类型 Redis
+  data:
+    redis:
+      host: localhost
+      # password:
+      port: 6379
+      database: 14
+  # 数据库相关配置
+  datasource:
+    dynamic:
+      primary: master   # 指定默认数据源
+      datasource:
+        master:         # 注意，这里要嵌套在 datasource 下
+          url: jdbc:mysql://localhost:3306/haorong_boot?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true&allowPublicKeyRetrieval=true
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          type: com.alibaba.druid.pool.DruidDataSource
+
+rocketmq:
+  name-server: localhost:9876
+  producer:
+    group: producer_group
+    retry-times-when-send-failed: 5
+    send-message-timeout: 5000
+
+aj:
+  captcha:
+    cache-type: redis
+    water-mark: haorong
+
+encode:
+  key: VyBcekSelErhMYN4
+
+sms:
+  ali:
+    accessKeyId: xxxxxxxxx
+    accessKeySecret: xxxxxxxxxxxxxx
+    loginTemplateCode: SMS_xxxxxxxxxx
+    loginSignName: 环兴商城
+
+xxl:
+  job:
+    adminAddresses: http://localhost:8080/xxl-job-admin
+    accessToken: hxsadadasdasdasda
+
+demo:
+  enabled: false
+
+cert-dir: C:\Download
+
+#knife4j配置
+knife4j:
+  #是否启用增强设置
+  enable: false
+  #是否启用生产环境屏蔽
+  production: false
+  #是否启用登录认证
+  basic:
+    enable: false
+  setting:
+    language: zh_cn
+
+

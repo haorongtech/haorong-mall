@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Copyright (c) 2025 沈阳浩荣科技有限公司 
+  All rights reserved. 
+  注意： 
+  本项目源代码由沈阳浩荣科技有限公司原创开发，版权所有。 
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>haorong</artifactId>
+        <groupId>com.haorong</groupId>
+        <version>3.1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <artifactId>haorong-common</artifactId>
+    <modules>
+        <module>haorong-common-core</module>
+        <module>haorong-common-storage</module>
+        <module>haorong-common-mybatis</module>
+        <module>haorong-common-log</module>
+        <module>haorong-common-security</module>
+        <module>haorong-common-job</module>
+        <module>haorong-common-logistics</module>
+        <module>haorong-common-sms</module>
+        <module>haorong-common-redis</module>
+        <module>haorong-common-dubbo</module>
+        <module>haorong-common-sentinel</module>
+        <module>haorong-common-seata</module>
+        <module>haorong-common-swagger</module>
+        <module>haorong-common-datasource</module>
+    </modules>
+</project>
